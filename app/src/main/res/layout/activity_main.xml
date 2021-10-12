@@ -8,10 +8,10 @@
     tools:context=".MainActivity">
 
     <EditText
-        android:id="@+id/Name"
+        android:id="@+id/Marka"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Name"
+        android:hint="Марка машины"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -20,17 +20,30 @@
         />
 
     <EditText
-        android:id="@+id/Mail"
+        android:id="@+id/Kyzov"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Mail"
+        android:layout_marginBottom="50dp"
+        android:hint="Тип кузова"
+        android:minHeight="48dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/Name"
-        android:layout_marginBottom="50dp"
+        app:layout_constraintTop_toBottomOf="@id/Marka"
         app:layout_constraintVertical_bias="0.052" />
+
+    <EditText
+        android:id="@+id/God"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Год"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Kyzov"
+        app:layout_constraintVertical_bias="0.072" />
 
     <TableLayout
         android:id="@+id/tableLayout"
@@ -39,48 +52,46 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Mail"
-        app:layout_constraintVertical_bias="0.114">
+        app:layout_constraintTop_toBottomOf="@+id/God"
+        app:layout_constraintVertical_bias="0">
 
         <TableRow
             android:id="@+id/row1"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="73dp"
+            android:paddingHorizontal="@android:dimen/app_icon_size">
+
 
             <Button
                 android:id="@+id/Add"
-                android:layout_width="100dp"
+                android:layout_width="wrap_content"
                 android:layout_height="60dp"
-                android:text="Add"
-                android:layout_margin="20dp"/>
-
-            <Button
-                android:id="@+id/Read"
-                android:layout_width="100dp"
-                android:layout_height="60dp"
-                android:text="Read"
-                android:layout_margin="20dp"/>
+                android:layout_margin="20dp"
+                android:text="Добавить" />
 
             <Button
                 android:id="@+id/Clear"
-                android:layout_width="100dp"
+                android:layout_width="wrap_content"
                 android:layout_height="60dp"
-                android:text="Clear"
-                android:layout_margin="20dp"/>
+                android:layout_margin="20dp"
+                android:text="Удалить" />
+
+
+
 
         </TableRow>
 
     </TableLayout>
+    <TableLayout
 
-    <TextView
-        android:id="@+id/output"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/tableLayout2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tableLayout"
-        app:layout_constraintVertical_bias="0.12">
+        app:layout_constraintTop_toBottomOf="@+id/tableLayout">
 
-    </TextView>
+    </TableLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
