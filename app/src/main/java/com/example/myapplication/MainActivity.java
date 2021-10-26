@@ -19,11 +19,14 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    Button btnAdd, btnRead, btnClear;
-    EditText etMarka, etKyzov, etGod;
+    Button btnAdd, btnClear, btnKypit;
+    TextView textItog;
+    EditText etNazvanie, etCena;
     DBHelper dbHelper;
     ContentValues contentValues;
     SQLiteDatabase database;
+    double p;
+
 
 
     @Override
@@ -37,9 +40,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnClear = (Button) findViewById(R.id.Clear);
         btnClear.setOnClickListener(this);
 
-        etMarka = (EditText) findViewById(R.id.Marka);
-        etKyzov = (EditText) findViewById(R.id.Kyzov);
-        etGod = (EditText) findViewById(R.id.God);
+        btnKypit = (Button) findViewById(R.id.Kypit);
+        btnKypit.setOnClickListener(this);
+
+        etNazvanie = (EditText) findViewById(R.id.Nazvanie);
+        etCena = (EditText) findViewById(R.id.Cena);
+        textItog = (TextView) findViewById(R.id.Itog);
 
 
         dbHelper = new DBHelper(this);
@@ -50,9 +56,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Cursor cursor = database.query(DBHelper.TABLE_AVTO, null, null, null, null, null, null);
         if (cursor.moveToFirst()) {
             int idIndex = cursor.getColumnIndex(DBHelper.KEY_ID);
-            int markaIndex = cursor.getColumnIndex(DBHelper.KEY_MARKA);
-            int kyzovIndex = cursor.getColumnIndex(DBHelper.KEY_KYZOV);
-            int godIndex = cursor.getColumnIndex(DBHelper.KEY_GOD);
+            int nazvanieIndex = cursor.getColumnIndex(DBHelper.KEY_NAZVANIE);
+            int cenaIndex = cursor.getColumnIndex(DBHelper.KEY_CENA);
             TableLayout tb2 = findViewById(R.id.tableLayout2);
             tb2.removeAllViews();
             do {
@@ -67,34 +72,35 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 tbOUT.addView(ID);
 
 
-                TextView MARKA = new TextView(this);
+                TextView NAZVANIE = new TextView(this);
                 params.weight = 1.0f;
 
-                MARKA.setLayoutParams(params);
-                MARKA.setText(cursor.getString(markaIndex));
-                tbOUT.addView(MARKA);
+                NAZVANIE.setLayoutParams(params);
+                NAZVANIE.setText(cursor.getString(nazvanieIndex));
+                tbOUT.addView(NAZVANIE);
 
 
-                TextView KYZOV = new TextView(this);
+                TextView CENA = new TextView(this);
                 params.weight = 3.0f;
-                KYZOV.setLayoutParams(params);
-                KYZOV.setText(cursor.getString(kyzovIndex));
-                tbOUT.addView(KYZOV);
-
-                TextView GOD = new TextView(this);
-                params.weight = 3.0f;
-                GOD.setLayoutParams(params);
-                GOD.setText(cursor.getString(godIndex));
-                tbOUT.addView(GOD);
-
+                CENA.setLayoutParams(params);
+                CENA.setText(cursor.getString(cenaIndex));
+                tbOUT.addView(CENA);
 
                 Button DELETE = new Button(this);
                 DELETE.setOnClickListener(this);
                 params.weight = 1.0f;
                 DELETE.setLayoutParams(params);
-                DELETE.setText("Удалить запись");
+                DELETE.setText("Delete");
                 DELETE.setId(cursor.getInt(idIndex));
                 tbOUT.addView(DELETE);
+
+                Button KYPITTOVAR = new Button(this);
+                KYPITTOVAR.setOnClickListener(this);
+                params.weight = 1.0f;
+                KYPITTOVAR.setLayoutParams(params);
+                KYPITTOVAR.setText("Buy");
+                KYPITTOVAR.setId(cursor.getInt(idIndex));
+                tbOUT.addView(KYPITTOVAR);
 
                 tb2.addView(tbOUT);
 
@@ -108,25 +114,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         dbHelper = new DBHelper(this);
-        String marka = etMarka.getText().toString();
-        String kyzov = etKyzov.getText().toString();
-        String god = etGod.getText().toString();
+        String nazvanie = etNazvanie.getText().toString();
+        String cena = etCena.getText().toString();
         contentValues = new ContentValues();
 
         switch (v.getId()) {
+            case R.id.Kypit:
+                Toast toast = Toast.makeText(getApplicationContext(),
+                        "Итоговая сумма заказа в корзине равна = " + textItog.getText(), Toast.LENGTH_SHORT);
+                toast.show();
+                textItog.setText("0");
+                break;
 
             case R.id.Add:
 
 
-                contentValues.put(DBHelper.KEY_MARKA, marka);
-                contentValues.put(DBHelper.KEY_KYZOV, kyzov);
-                contentValues.put(DBHelper.KEY_GOD, god);
+                contentValues.put(DBHelper.KEY_NAZVANIE, nazvanie);
+                contentValues.put(DBHelper.KEY_CENA, cena);
 
                 database.insert(DBHelper.TABLE_AVTO, null, contentValues);
                 UpdateTable();
-                etMarka.setText(null);
-                etKyzov.setText(null);
-                etGod.setText(null);
+                etNazvanie.setText(null);
+                etCena.setText(null);
 
                 break;
 
@@ -134,51 +143,68 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 database.delete(DBHelper.TABLE_AVTO, null, null);
                 TableLayout dbOutput = findViewById(R.id.tableLayout2);
                 dbOutput.removeAllViews();
-                etMarka.setText(null);
-                etKyzov.setText(null);
-                etGod.setText(null);
+                etNazvanie.setText(null);
+                etCena.setText(null);
                 UpdateTable();
                 break;
             default:
-                View outBDRow = (View) v.getParent();
-                ViewGroup outBD = (ViewGroup)  outBDRow.getParent();
-                outBD.removeView(outBDRow);
-                outBD.invalidate();
+                Button knopka = (Button) v;
+                switch (knopka.getText().toString()){
+                    case "Buy":
+                        View outBDRow = (View) v.getParent();
+                        ViewGroup outBD = (ViewGroup)  outBDRow.getParent();
+                        outBD.removeView(outBDRow);
+                        outBD.invalidate();
 
-                database.delete(DBHelper.TABLE_AVTO,DBHelper.KEY_ID + " = ?", new String[]{String.valueOf((v.getId()))});
-                contentValues = new ContentValues();
-                Cursor cursorUPD = database.query(DBHelper.TABLE_AVTO, null, null, null, null, null, null);
-
-                if (cursorUPD.moveToFirst()) {
-                    int idIndex = cursorUPD.getColumnIndex(DBHelper.KEY_ID);
-                    int markaIndex = cursorUPD.getColumnIndex(DBHelper.KEY_MARKA);
-                    int kyzovIndex = cursorUPD.getColumnIndex(DBHelper.KEY_KYZOV);
-                    int godIndex = cursorUPD.getColumnIndex(DBHelper.KEY_GOD);
-                    int realID =1;
-                    do{
-                        if(cursorUPD.getInt(idIndex)>realID)
-                        {
-                            contentValues.put(DBHelper.KEY_ID,realID);
-                            contentValues.put(DBHelper.KEY_MARKA,cursorUPD.getString(markaIndex));
-                            contentValues.put(DBHelper.KEY_KYZOV,cursorUPD.getString(kyzovIndex));
-                            contentValues.put(DBHelper.KEY_GOD,cursorUPD.getString(godIndex));
-                            database.replace(DBHelper.TABLE_AVTO,null,contentValues);
-
-
+                        String selection = "_id = ?";
+                        Cursor c = database.query(DBHelper.TABLE_AVTO, null, selection, new String[]{String.valueOf(v.getId())}, null, null, null);
+                        double n = Double.parseDouble(textItog.getText().toString());
+                        if (c.moveToFirst()) {
+                            int Cena = c.getColumnIndex(DBHelper.KEY_CENA);
+                            do {
+                                p = c.getFloat(Cena);
+                            } while (c.moveToNext());
                         }
-                        realID++;
-                    }while (cursorUPD.moveToNext());
-                    if(cursorUPD.moveToLast() && v.getId()!=realID){
-                        database.delete(DBHelper.TABLE_AVTO,DBHelper.KEY_ID+ " = ?", new String[]{cursorUPD.getString(idIndex)});
-                    }
-                    UpdateTable();
+                        c.close();
+                        n = p + n;
+                        textItog.setText("" + n);
+                        UpdateTable();
+                        break;
+                    case "Delete":
+                        database.delete(DBHelper.TABLE_AVTO,DBHelper.KEY_ID + " = ?", new String[]{String.valueOf((v.getId()))});
+                        contentValues = new ContentValues();
+                        Cursor cursorUPD = database.query(DBHelper.TABLE_AVTO, null, null, null, null, null, null);
+
+                        if (cursorUPD.moveToFirst()) {
+                            int idIndex = cursorUPD.getColumnIndex(DBHelper.KEY_ID);
+                            int nazvanieIndex = cursorUPD.getColumnIndex(DBHelper.KEY_NAZVANIE);
+                            int cenaIndex = cursorUPD.getColumnIndex(DBHelper.KEY_CENA);
+                            int realID =1;
+                            do{
+                                if(cursorUPD.getInt(idIndex)>realID)
+                                {
+                                    contentValues.put(DBHelper.KEY_ID,realID);
+                                    contentValues.put(DBHelper.KEY_NAZVANIE,cursorUPD.getString(nazvanieIndex));
+                                    contentValues.put(DBHelper.KEY_CENA,cursorUPD.getString(cenaIndex));
+                                    database.replace(DBHelper.TABLE_AVTO,null,contentValues);
+
+
+                                }
+                                realID++;
+                            }while (cursorUPD.moveToNext());
+                            if(cursorUPD.moveToLast() && v.getId()!=realID){
+                                database.delete(DBHelper.TABLE_AVTO,DBHelper.KEY_ID+ " = ?", new String[]{cursorUPD.getString(idIndex)});
+                            }
+                            UpdateTable();
+                        }
+
+
+                        break;
+
+
+                }
                 }
 
-
-                break;
-
-
-        }
         dbHelper.close();
     }
 }

@@ -5,14 +5,14 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DBHelper  extends SQLiteOpenHelper{
 
-    public static final int DATABASE_VERSION = 3;
+    public static final int DATABASE_VERSION = 6;
     public static final String DATABASE_NAME = "contactDb";
     public static final String TABLE_AVTO = "avtomobil";
 
     public static final String KEY_ID = "_id";
-    public static final String KEY_MARKA = "marka";
-    public static final String KEY_KYZOV = "kyzov";
-    public static final String KEY_GOD = "god";
+    public static final String KEY_NAZVANIE = "nazvanie";
+    public static final String KEY_CENA = "cena";
+
 
     public DBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -21,7 +21,7 @@ public class DBHelper  extends SQLiteOpenHelper{
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("create table " + TABLE_AVTO + "(" + KEY_ID
-                + " integer primary key," + KEY_MARKA + " text," + KEY_KYZOV + " text," +  KEY_GOD + " text" + ")");
+                + " integer primary key," + KEY_NAZVANIE + " text," + KEY_CENA + " text"  + ")");
 
     }
 

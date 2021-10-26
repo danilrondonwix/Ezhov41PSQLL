@@ -7,43 +7,55 @@
 
     tools:context=".MainActivity">
 
+    <TextView
+        android:id="@+id/Itog"
+        android:layout_width="112dp"
+        android:layout_height="30dp"
+        android:text="0"
+        app:layout_constraintBottom_toTopOf="@+id/Nazvanie"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.526" />
+
+    <TextView
+        android:id="@+id/Korzina"
+        android:layout_width="98dp"
+        android:layout_height="34dp"
+        android:text="Корзина"
+        app:layout_constraintBottom_toTopOf="@+id/Nazvanie"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.603"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.588" />
+
     <EditText
-        android:id="@+id/Marka"
+        android:id="@+id/Nazvanie"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Марка машины"
+        android:layout_marginTop="68dp"
+        android:hint="Название"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.037"
-        />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/Kyzov"
+        android:id="@+id/Cena"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="50dp"
-        android:hint="Тип кузова"
+        android:hint="Цена"
         android:minHeight="48dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/Marka"
-        app:layout_constraintVertical_bias="0.052" />
+        app:layout_constraintTop_toBottomOf="@id/Nazvanie"
+        app:layout_constraintVertical_bias="0.0" />
 
-    <EditText
-        android:id="@+id/God"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Год"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Kyzov"
-        app:layout_constraintVertical_bias="0.072" />
 
     <TableLayout
         android:id="@+id/tableLayout"
@@ -52,7 +64,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/God"
+        app:layout_constraintTop_toBottomOf="@+id/Cena"
         app:layout_constraintVertical_bias="0">
 
         <TableRow
@@ -82,6 +94,7 @@
         </TableRow>
 
     </TableLayout>
+
     <TableLayout
 
         android:id="@+id/tableLayout2"
@@ -89,9 +102,23 @@
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tableLayout">
+        app:layout_constraintTop_toBottomOf="@+id/tableLayout"
+        app:layout_constraintVertical_bias="1.0">
 
     </TableLayout>
+
+    <Button
+        android:id="@+id/Kypit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Купить"
+        app:layout_constraintBottom_toTopOf="@+id/Nazvanie"
+        app:layout_constraintEnd_toStartOf="@+id/Korzina"
+        app:layout_constraintHorizontal_bias="0.814"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.3" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
