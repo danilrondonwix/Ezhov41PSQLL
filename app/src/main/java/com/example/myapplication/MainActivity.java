@@ -1,6 +1,8 @@
 package com.example.myapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -19,13 +21,12 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    Button btnAdd, btnClear, btnKypit;
-    TextView textItog;
+    Button btnAdd, btnClear, btnPage2;
     EditText etNazvanie, etCena;
     DBHelper dbHelper;
     ContentValues contentValues;
     SQLiteDatabase database;
-    double p;
+
 
 
 
@@ -37,15 +38,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnAdd = (Button) findViewById(R.id.Add);
         btnAdd.setOnClickListener(this);
 
+        btnPage2 = (Button) findViewById(R.id.Page2);
+        btnPage2.setOnClickListener(this);
+
         btnClear = (Button) findViewById(R.id.Clear);
         btnClear.setOnClickListener(this);
 
-        btnKypit = (Button) findViewById(R.id.Kypit);
-        btnKypit.setOnClickListener(this);
+
 
         etNazvanie = (EditText) findViewById(R.id.Nazvanie);
         etCena = (EditText) findViewById(R.id.Cena);
-        textItog = (TextView) findViewById(R.id.Itog);
+
 
 
         dbHelper = new DBHelper(this);
@@ -94,13 +97,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 DELETE.setId(cursor.getInt(idIndex));
                 tbOUT.addView(DELETE);
 
-                Button KYPITTOVAR = new Button(this);
-                KYPITTOVAR.setOnClickListener(this);
-                params.weight = 1.0f;
-                KYPITTOVAR.setLayoutParams(params);
-                KYPITTOVAR.setText("Buy");
-                KYPITTOVAR.setId(cursor.getInt(idIndex));
-                tbOUT.addView(KYPITTOVAR);
 
                 tb2.addView(tbOUT);
 
@@ -119,11 +115,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         contentValues = new ContentValues();
 
         switch (v.getId()) {
-            case R.id.Kypit:
-                Toast toast = Toast.makeText(getApplicationContext(),
-                        "Итоговая сумма заказа в корзине равна = " + textItog.getText(), Toast.LENGTH_SHORT);
-                toast.show();
-                textItog.setText("0");
+            case    R.id.Page2:
+
+                Intent intent =new Intent(MainActivity.this, Magazin.class);
+                startActivity(intent);
                 break;
 
             case R.id.Add:
@@ -150,27 +145,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             default:
                 Button knopka = (Button) v;
                 switch (knopka.getText().toString()){
-                    case "Buy":
+
+                    case "Delete":
                         View outBDRow = (View) v.getParent();
-                        ViewGroup outBD = (ViewGroup)  outBDRow.getParent();
+                        ViewGroup outBD = (ViewGroup) outBDRow.getParent();
                         outBD.removeView(outBDRow);
                         outBD.invalidate();
-
-                        String selection = "_id = ?";
-                        Cursor c = database.query(DBHelper.TABLE_AVTO, null, selection, new String[]{String.valueOf(v.getId())}, null, null, null);
-                        double n = Double.parseDouble(textItog.getText().toString());
-                        if (c.moveToFirst()) {
-                            int Cena = c.getColumnIndex(DBHelper.KEY_CENA);
-                            do {
-                                p = c.getFloat(Cena);
-                            } while (c.moveToNext());
-                        }
-                        c.close();
-                        n = p + n;
-                        textItog.setText("" + n);
-                        UpdateTable();
-                        break;
-                    case "Delete":
                         database.delete(DBHelper.TABLE_AVTO,DBHelper.KEY_ID + " = ?", new String[]{String.valueOf((v.getId()))});
                         contentValues = new ContentValues();
                         Cursor cursorUPD = database.query(DBHelper.TABLE_AVTO, null, null, null, null, null, null);
@@ -203,8 +183,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
                 }
-                }
+        }
 
         dbHelper.close();
     }
 }
+
+
